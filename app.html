@@ -1,0 +1,2121 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CORE + PILATES App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1a1a1a;
+    --bg-deep: #111111;
+    --surface: #242424;
+    --surface-2: #2e2e2e;
+    --surface-3: #3a3a3a;
+    --pink: #e8a4b0;
+    --pink-light: #f2c4cc;
+    --pink-dark: #c87a8a;
+    --pink-deep: #8c4a55;
+    --text: #f0ece8;
+    --text-soft: #c8c0bc;
+    --text-muted: #8a8080;
+    --text-dim: #5a5454;
+    --border: #353535;
+    --border-soft: #2a2a2a;
+    --green: #8ecfa0;
+    --gold: #d4b896;
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --radius-sm: 10px;
+    --shadow: 0 12px 40px rgba(0,0,0,0.5);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    background: linear-gradient(180deg, #0d0d0d 0%, #1a1216 100%);
+    min-height: 100vh;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 12px;
+  }
+
+  /* Decorative background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px; right: -200px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(232,164,176,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -200px; left: -200px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(200,122,138,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─────────── BRANDING HEADER ─────────── */
+  .brand-mark {
+    text-align: center;
+    margin-bottom: 24px;
+    z-index: 1;
+    position: relative;
+  }
+  .brand-mark .small {
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 300;
+  }
+  .brand-mark .big {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: 6px;
+    color: var(--pink-light);
+  }
+  .brand-mark .big span { color: var(--text); font-weight: 300; }
+  .brand-mark .line {
+    width: 40px; height: 1px;
+    background: var(--pink-dark);
+    margin: 10px auto 0;
+  }
+
+  /* ─────────── PHONE FRAME ─────────── */
+  .phone {
+    width: 380px;
+    max-width: 100%;
+    background: var(--bg);
+    border-radius: 44px;
+    border: 3px solid #2a2a2a;
+    box-shadow: var(--shadow), 0 0 0 8px #1a1a1a, 0 0 80px rgba(232,164,176,0.05);
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    height: 780px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .status-bar {
+    height: 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+    background: var(--bg);
+    flex-shrink: 0;
+  }
+  .status-icons { display: flex; gap: 5px; align-items: center; font-size: 11px; }
+
+  .screen-container {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    position: relative;
+  }
+  .screen-container::-webkit-scrollbar { display: none; }
+
+  .screen {
+    display: none;
+    animation: fadeIn 0.35s ease;
+    min-height: 100%;
+    padding-bottom: 90px;
+  }
+  .screen.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─────────── HOME SCREEN ─────────── */
+  .home-hero {
+    padding: 18px 22px 22px;
+    background:
+      radial-gradient(ellipse at top right, rgba(232,164,176,0.12) 0%, transparent 60%),
+      linear-gradient(160deg, #2a2025 0%, #1f1a1d 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .home-hero::after {
+    content: 'CORE+';
+    position: absolute;
+    right: -10px; bottom: -20px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 90px;
+    font-weight: 600;
+    color: rgba(232,164,176,0.04);
+    letter-spacing: 4px;
+    pointer-events: none;
+  }
+
+  .home-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .logo-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--pink-light);
+  }
+  .logo-text span { color: var(--text-soft); font-weight: 400; }
+  .header-icons { display: flex; gap: 14px; align-items: center; }
+  .icon-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    position: relative;
+    transition: all 0.2s;
+  }
+  .icon-btn:hover { background: rgba(232,164,176,0.1); border-color: var(--pink-dark); }
+  .notif-dot {
+    position: absolute; top: 8px; right: 9px;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--pink);
+    box-shadow: 0 0 6px var(--pink);
+  }
+
+  .greeting {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 300;
+  }
+  .user-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--text);
+    letter-spacing: 1px;
+  }
+  .user-name strong { color: var(--pink); font-weight: 500; }
+  .user-quote {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+  }
+
+  /* Membership card */
+  .membership-card {
+    margin: -18px 18px 20px;
+    background: linear-gradient(135deg, #3a2630 0%, #2a1d24 50%, #3a2630 100%);
+    border: 1px solid rgba(232,164,176,0.3);
+    border-radius: var(--radius-lg);
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  .membership-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(circle at top right, rgba(232,164,176,0.15) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .mc-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; position: relative; }
+  .mc-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--pink-light);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .mc-plan {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .mc-tier {
+    background: rgba(232,164,176,0.15);
+    border: 1px solid rgba(232,164,176,0.3);
+    color: var(--pink-light);
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+  }
+  .mc-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(232,164,176,0.15);
+    position: relative;
+  }
+  .mc-stat .v {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--pink-light);
+    line-height: 1;
+  }
+  .mc-stat .l {
+    font-size: 9px;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    margin-top: 4px;
+  }
+
+  /* Quick actions */
+  .quick-actions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 0 18px 24px;
+  }
+  .qa-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 14px 6px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .qa-item:hover {
+    border-color: var(--pink-dark);
+    transform: translateY(-2px);
+    background: var(--surface-2);
+  }
+  .qa-icon {
+    width: 32px; height: 32px;
+    margin: 0 auto 8px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, rgba(232,164,176,0.15), rgba(232,164,176,0.05));
+    border-radius: 10px;
+    color: var(--pink-light);
+  }
+  .qa-icon svg { width: 16px; height: 16px; stroke: var(--pink-light); fill: none; stroke-width: 1.5; }
+  .qa-label { font-size: 10px; color: var(--text-soft); letter-spacing: 0.5px; }
+
+  /* Section title */
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 22px 14px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--text);
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+  .section-title::before {
+    content: '';
+    display: inline-block;
+    width: 16px; height: 1px;
+    background: var(--pink-dark);
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+  .see-all {
+    font-size: 10px;
+    color: var(--pink);
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  /* Today's class cards */
+  .today-list {
+    padding: 0 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .class-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .class-card:hover { border-color: var(--pink-dark); }
+  .class-card.booked {
+    border-color: rgba(232,164,176,0.4);
+    background: linear-gradient(135deg, var(--surface) 0%, rgba(232,164,176,0.04) 100%);
+  }
+  .ct-time {
+    text-align: center;
+    min-width: 44px;
+  }
+  .ct-time .h {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--pink-light);
+    line-height: 1;
+  }
+  .ct-time .a {
+    font-size: 9px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    margin-top: 3px;
+  }
+  .ct-bar { width: 1px; height: 38px; background: var(--border); }
+  .ct-info { flex: 1; }
+  .ct-name { font-size: 13px; color: var(--text); margin-bottom: 4px; font-weight: 500; }
+  .ct-meta { font-size: 11px; color: var(--text-muted); }
+  .ct-badge {
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(232,164,176,0.18);
+    color: var(--pink-light);
+    border: 1px solid rgba(232,164,176,0.25);
+    letter-spacing: 0.5px;
+  }
+  .ct-badge.available {
+    background: rgba(142,207,160,0.1);
+    color: var(--green);
+    border-color: rgba(142,207,160,0.25);
+  }
+
+  /* Promo card */
+  .promo-banner {
+    margin: 24px 18px 0;
+    background: linear-gradient(120deg, #2a2025 0%, #3a2530 50%, #2a2025 100%);
+    border: 1px solid rgba(232,164,176,0.2);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .promo-banner::before {
+    content: '';
+    position: absolute;
+    right: -30px; top: -30px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,164,176,0.2), transparent 70%);
+  }
+  .promo-tag {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--pink);
+    margin-bottom: 6px;
+  }
+  .promo-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .promo-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* ─────────── SCHEDULE SCREEN ─────────── */
+  .sch-header {
+    padding: 20px 22px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .sch-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .sch-page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    color: var(--text);
+    font-weight: 400;
+    letter-spacing: 1px;
+  }
+  .sch-filter-btn {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: rgba(232,164,176,0.1);
+    border: 1px solid rgba(232,164,176,0.2);
+    color: var(--pink);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .week-strip {
+    display: flex;
+    gap: 6px;
+  }
+  .week-day {
+    flex: 1;
+    text-align: center;
+    padding: 10px 2px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+  }
+  .week-day:hover { background: var(--surface-2); }
+  .week-day.active {
+    background: linear-gradient(135deg, var(--pink-dark), var(--pink-deep));
+    border-color: var(--pink-dark);
+    box-shadow: 0 4px 14px rgba(200,122,138,0.3);
+  }
+  .week-day .wd { font-size: 9px; color: var(--text-muted); margin-bottom: 4px; letter-spacing: 1px; }
+  .week-day.active .wd { color: rgba(255,255,255,0.8); }
+  .week-day .dd { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 500; color: var(--text); }
+  .week-day.active .dd { color: white; }
+  .week-day .dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--pink);
+    margin: 4px auto 0;
+  }
+
+  .sch-list {
+    padding: 14px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .sch-class {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    gap: 14px;
+    align-items: center;
+    transition: all 0.2s;
+  }
+  .sch-class:hover { border-color: var(--pink-dark); transform: translateX(2px); }
+  .sch-class.full { opacity: 0.55; }
+  .sch-time-col { text-align: center; }
+  .sch-t { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--pink-light); font-weight: 500; }
+  .sch-ap { font-size: 9px; color: var(--text-muted); letter-spacing: 1px; }
+  .sch-dur {
+    font-size: 9px;
+    color: var(--text-dim);
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid var(--border);
+  }
+  .sch-name { font-size: 13px; color: var(--text); font-weight: 500; margin-bottom: 4px; }
+  .sch-coach-row { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+  .sch-spots {
+    font-size: 10px;
+    color: var(--green);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .sch-spots.low { color: var(--pink); }
+  .sch-spots::before {
+    content: '●';
+    font-size: 6px;
+  }
+  .sch-btn {
+    font-size: 11px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--pink-dark);
+    background: transparent;
+    color: var(--pink-light);
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: inherit;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .sch-btn:hover { background: var(--pink-dark); color: white; }
+  .sch-btn.booked {
+    background: linear-gradient(135deg, var(--pink-dark), var(--pink-deep));
+    color: white;
+    border-color: var(--pink-dark);
+  }
+  .sch-btn.waitlist {
+    border-color: var(--text-muted);
+    color: var(--text-muted);
+  }
+
+  /* ─────────── ONLINE COURSES SCREEN ─────────── */
+  .online-header {
+    padding: 22px 22px 0;
+    background: linear-gradient(180deg, #251c20 0%, var(--bg) 100%);
+  }
+  .online-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 6px;
+  }
+  .online-page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    color: var(--text);
+    font-weight: 400;
+    letter-spacing: 1px;
+  }
+  .online-search {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: rgba(232,164,176,0.1);
+    border: 1px solid rgba(232,164,176,0.2);
+    color: var(--pink);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .online-subtitle {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+
+  .cat-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 0 22px 16px;
+    scrollbar-width: none;
+  }
+  .cat-scroll::-webkit-scrollbar { display: none; }
+  .cat-pill {
+    white-space: nowrap;
+    font-size: 11px;
+    padding: 8px 16px;
+    border-radius: 22px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .cat-pill:hover { color: var(--text); }
+  .cat-pill.active {
+    background: linear-gradient(135deg, var(--pink-dark), var(--pink-deep));
+    border-color: var(--pink-dark);
+    color: white;
+  }
+
+  .featured-course {
+    margin: 0 18px 18px;
+    height: 160px;
+    border-radius: var(--radius-md);
+    background:
+      linear-gradient(135deg, rgba(232,164,176,0.15) 0%, transparent 60%),
+      linear-gradient(135deg, #3a2530 0%, #2a1f25 100%);
+    border: 1px solid rgba(232,164,176,0.25);
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .featured-course::after {
+    content: '';
+    position: absolute;
+    right: -40px; bottom: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,164,176,0.2), transparent 70%);
+  }
+  .ft-tag {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--pink);
+    align-self: flex-start;
+    padding: 4px 10px;
+    background: rgba(232,164,176,0.1);
+    border: 1px solid rgba(232,164,176,0.3);
+    border-radius: 20px;
+    position: relative;
+  }
+  .ft-content { position: relative; }
+  .ft-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--text);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .ft-meta { font-size: 11px; color: var(--text-soft); margin-bottom: 12px; }
+  .ft-play {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--pink-light);
+    letter-spacing: 1px;
+  }
+  .ft-play-icon {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--pink-dark);
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-size: 9px;
+  }
+
+  .course-grid {
+    padding: 0 18px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .course-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .course-card:hover { transform: translateY(-3px); border-color: var(--pink-dark); }
+  .course-thumb {
+    height: 100px;
+    background: linear-gradient(135deg, #3a2530 0%, #252030 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .course-thumb.t2 { background: linear-gradient(135deg, #25352a 0%, #202535 100%); }
+  .course-thumb.t3 { background: linear-gradient(135deg, #353025 0%, #302525 100%); }
+  .course-thumb.t4 { background: linear-gradient(135deg, #2a3035 0%, #253030 100%); }
+  .course-thumb::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.4));
+  }
+  .course-play {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(232,164,176,0.2);
+    border: 1px solid rgba(232,164,176,0.4);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--pink-light);
+    backdrop-filter: blur(4px);
+    z-index: 1;
+    font-size: 11px;
+  }
+  .badge-corner {
+    position: absolute;
+    top: 8px; left: 8px;
+    font-size: 9px;
+    padding: 3px 8px;
+    background: var(--pink-dark);
+    color: white;
+    border-radius: 4px;
+    letter-spacing: 1.5px;
+    z-index: 2;
+    font-weight: 500;
+  }
+  .badge-corner.gold { background: var(--gold); color: #2a2020; }
+  .course-info { padding: 10px 12px 12px; }
+  .course-title {
+    font-size: 12px;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.4;
+    font-weight: 500;
+  }
+  .course-meta { font-size: 10px; color: var(--text-muted); margin-bottom: 6px; }
+  .course-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    color: var(--pink);
+    font-weight: 500;
+  }
+  .course-price.unlocked { color: var(--green); font-size: 11px; }
+
+  /* ─────────── SHOP SCREEN ─────────── */
+  .shop-header {
+    padding: 22px 22px 8px;
+    background: linear-gradient(180deg, #1f1c1e 0%, var(--bg) 100%);
+  }
+  .shop-banner {
+    margin: 0 18px 18px;
+    height: 100px;
+    border-radius: var(--radius-md);
+    background:
+      linear-gradient(120deg, #3a2530 0%, #2a2025 100%);
+    border: 1px solid rgba(232,164,176,0.2);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .shop-banner::before {
+    content: '✦';
+    position: absolute;
+    right: 30px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 80px;
+    color: rgba(232,164,176,0.1);
+  }
+  .shop-banner-text {
+    z-index: 1;
+  }
+  .shop-banner-tag {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--pink);
+    margin-bottom: 4px;
+  }
+  .shop-banner-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .shop-banner-sub {
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+
+  .shop-categories {
+    padding: 0 18px 16px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .sc-item {
+    text-align: center;
+    cursor: pointer;
+  }
+  .sc-icon {
+    width: 50px; height: 50px;
+    margin: 0 auto 6px;
+    border-radius: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    transition: all 0.2s;
+  }
+  .sc-item:hover .sc-icon { border-color: var(--pink-dark); background: rgba(232,164,176,0.05); }
+  .sc-label { font-size: 10px; color: var(--text-soft); }
+
+  .product-grid {
+    padding: 0 18px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .product-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .product-card:hover { transform: translateY(-2px); border-color: var(--pink-dark); }
+  .product-img {
+    height: 130px;
+    background: linear-gradient(135deg, #2a2326 0%, #1f1a1d 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    position: relative;
+  }
+  .product-img.p2 { background: linear-gradient(135deg, #2a2820 0%, #25201d 100%); }
+  .product-img.p3 { background: linear-gradient(135deg, #25282a 0%, #1d2025 100%); }
+  .product-img.p4 { background: linear-gradient(135deg, #2a2420 0%, #25201d 100%); }
+  .product-info { padding: 10px 12px 12px; }
+  .product-name { font-size: 11px; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+  .product-bottom { display: flex; justify-content: space-between; align-items: center; }
+  .product-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: var(--pink);
+    font-weight: 500;
+  }
+  .product-add {
+    width: 26px; height: 26px;
+    border-radius: 8px;
+    background: rgba(232,164,176,0.15);
+    border: 1px solid rgba(232,164,176,0.3);
+    color: var(--pink-light);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    font-weight: 300;
+  }
+  .product-add:hover { background: var(--pink-dark); color: white; }
+
+  /* ─────────── PROFILE SCREEN ─────────── */
+  .profile-header {
+    padding: 24px 22px;
+    background:
+      radial-gradient(ellipse at top, rgba(232,164,176,0.1) 0%, transparent 60%),
+      linear-gradient(180deg, #251c20 0%, var(--bg) 100%);
+    text-align: center;
+    position: relative;
+  }
+  .profile-avatar {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--pink-dark), var(--pink-deep));
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    color: white;
+    border: 3px solid rgba(232,164,176,0.3);
+    box-shadow: 0 8px 24px rgba(200,122,138,0.3);
+  }
+  .profile-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .profile-id { font-size: 11px; color: var(--text-muted); letter-spacing: 1px; }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 14px 18px;
+    margin-top: -10px;
+    position: relative;
+  }
+  .stat-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    text-align: center;
+  }
+  .stat-v {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--pink-light);
+    font-weight: 500;
+    line-height: 1;
+  }
+  .stat-l {
+    font-size: 9px;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    margin-top: 4px;
+  }
+
+  /* Achievement / level bar */
+  .level-card {
+    margin: 8px 18px 18px;
+    background: linear-gradient(135deg, #2a2025, #1f1a1d);
+    border: 1px solid rgba(212,184,150,0.2);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+  }
+  .level-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .level-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text);
+  }
+  .level-icon { color: var(--gold); font-size: 16px; }
+  .level-points {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    color: var(--gold);
+  }
+  .level-bar {
+    height: 6px;
+    background: var(--surface-3);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .level-fill {
+    height: 100%;
+    width: 65%;
+    background: linear-gradient(90deg, var(--pink-dark), var(--pink), var(--gold));
+    border-radius: 3px;
+  }
+  .level-meta { font-size: 10px; color: var(--text-muted); }
+
+  /* Menu list */
+  .menu-section {
+    padding: 0 18px 14px;
+  }
+  .menu-section-title {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    padding: 0 4px;
+  }
+  .menu-list {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-soft);
+    transition: background 0.15s;
+  }
+  .menu-item:last-child { border-bottom: none; }
+  .menu-item:hover { background: var(--surface-2); }
+  .menu-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: rgba(232,164,176,0.1);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--pink-light);
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .menu-text { flex: 1; }
+  .menu-label { font-size: 12px; color: var(--text); }
+  .menu-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+  .menu-arrow { color: var(--text-muted); font-size: 14px; }
+
+  /* ─────────── AI CHAT SCREEN ─────────── */
+  .ai-chat-screen {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+    padding-bottom: 0 !important;
+  }
+  .ai-chat-screen.active { display: flex; }
+  .ai-header {
+    padding: 18px 20px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .ai-back {
+    width: 30px; height: 30px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted);
+    font-size: 18px;
+  }
+  .ai-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--pink-dark), var(--pink-deep));
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(232,164,176,0.4);
+    color: white;
+    font-size: 16px;
+  }
+  .ai-info { flex: 1; }
+  .ai-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .ai-status {
+    font-size: 10px;
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .ai-status::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--green);
+  }
+
+  .chat-body {
+    flex: 1;
+    padding: 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    background:
+      radial-gradient(ellipse at top, rgba(232,164,176,0.04), transparent 60%),
+      var(--bg);
+  }
+  .chat-body::-webkit-scrollbar { width: 0; }
+
+  .msg { max-width: 80%; }
+  .msg.ai { align-self: flex-start; }
+  .msg.user { align-self: flex-end; }
+  .msg-bubble {
+    border-radius: 16px;
+    padding: 10px 14px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .msg.ai .msg-bubble {
+    background: var(--surface-2);
+    color: var(--text);
+    border-bottom-left-radius: 4px;
+    border: 1px solid var(--border);
+  }
+  .msg.user .msg-bubble {
+    background: linear-gradient(135deg, var(--pink-dark), var(--pink-deep));
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+  .msg-time {
+    font-size: 9px;
+    color: var(--text-dim);
+    margin-top: 4px;
+    padding: 0 6px;
+    letter-spacing: 0.5px;
+  }
+  .msg.user .msg-time { text-align: right; }
+
+  .typing {
+    display: flex;
+    gap: 4px;
+    padding: 10px 14px;
+  }
+  .typing span {
+    width: 6px; height: 6px;
+    background: var(--text-muted);
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out;
+  }
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+
+  .suggest-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 0 16px 12px;
+    flex-shrink: 0;
+  }
+  .chip {
+    font-size: 10px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(232,164,176,0.3);
+    background: rgba(232,164,176,0.05);
+    color: var(--pink-light);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .chip:hover { background: rgba(232,164,176,0.15); }
+
+  .chat-input-row {
+    display: flex;
+    gap: 10px;
+    padding: 12px 16px 16px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .chat-input {
+    flex: 1;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 10px 16px;
+    font-size: 12px;
+    color: var(--text);
+    outline: none;
+    font-family: inherit;
+  }
+  .chat-input::placeholder { color: var(--text-muted); }
+  .chat-input:focus { border-color: var(--pink-dark); }
+  .send-btn {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--pink-dark), var(--pink-deep));
+    border: none;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(200,122,138,0.4);
+  }
+
+  /* ─────────── BOTTOM NAV ─────────── */
+  .nav-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    display: flex;
+    padding: 10px 8px 16px;
+    background: rgba(36,36,36,0.95);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
+    z-index: 10;
+  }
+  .nav-bar.hidden { display: none; }
+  .nav-item {
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+    padding: 4px 0;
+    transition: all 0.2s;
+  }
+  .nav-icon {
+    width: 22px; height: 22px;
+    margin: 0 auto 4px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-icon svg { width: 20px; height: 20px; stroke: var(--text-muted); fill: none; stroke-width: 1.5; }
+  .nav-label { font-size: 10px; color: var(--text-muted); letter-spacing: 0.5px; }
+  .nav-item.active .nav-label { color: var(--pink); font-weight: 500; }
+  .nav-item.active .nav-icon svg { stroke: var(--pink); filter: drop-shadow(0 0 4px var(--pink-dark)); }
+
+  /* ─────────── FLOATING AI BUTTON ─────────── */
+  .ai-fab {
+    position: absolute;
+    bottom: 88px;
+    right: 18px;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+    border: 2px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(232,164,176,0.4), 0 0 30px rgba(232,164,176,0.2);
+    z-index: 9;
+    color: white;
+    font-size: 22px;
+    animation: floatAi 3s ease-in-out infinite;
+  }
+  @keyframes floatAi {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+  .ai-fab:hover { transform: scale(1.08); }
+  .ai-fab.hidden { display: none; }
+
+  /* ─────────── PROMO/INFO TEXT ─────────── */
+  .footer-info {
+    margin-top: 30px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 11px;
+    letter-spacing: 2px;
+    z-index: 1;
+    position: relative;
+  }
+  .footer-info .divider {
+    width: 30px; height: 1px;
+    background: var(--pink-dark);
+    margin: 8px auto;
+  }
+
+  /* SCROLL HINT */
+  .scroll-hint {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-top: 16px;
+  }
+
+  /* ─────────── RESPONSIVE ─────────── */
+  @media (max-width: 420px) {
+    body { padding: 12px 0; }
+    .phone {
+      width: 100%;
+      height: 100vh;
+      max-height: 100vh;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+    }
+    .phone::before { display: none; }
+    .brand-mark, .footer-info, .scroll-hint { display: none; }
+    body { padding: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="brand-mark">
+  <div class="small">Mobile App Preview</div>
+  <div class="big">CORE <span>+</span> PILATES</div>
+  <div class="line"></div>
+</div>
+
+<div class="phone">
+  <div class="status-bar">
+    <span>9:41</span>
+    <span class="status-icons">
+      <span style="font-size:10px">●●●●</span>
+      <span>📶</span>
+      <span>🔋</span>
+    </span>
+  </div>
+
+  <div class="screen-container">
+
+    <!-- ───────────── HOME SCREEN ───────────── -->
+    <div class="screen active" id="screen-home">
+      <div class="home-hero">
+        <div class="home-top">
+          <div class="logo-text">CORE <span>+</span></div>
+          <div class="header-icons">
+            <div class="icon-btn">
+              <span class="notif-dot"></span>
+              🔔
+            </div>
+            <div class="icon-btn">⚙</div>
+          </div>
+        </div>
+        <div class="greeting">Welcome Back</div>
+        <div class="user-name">Annie, <strong>你好</strong></div>
+        <div class="user-quote">"Strength is the only way to gracefulness."</div>
+      </div>
+
+      <div class="membership-card">
+        <div class="mc-top">
+          <div>
+            <div class="mc-label">MEMBERSHIP</div>
+            <div class="mc-plan">無限月費方案</div>
+          </div>
+          <div class="mc-tier">VIP</div>
+        </div>
+        <div class="mc-stats">
+          <div class="mc-stat">
+            <div class="v">12</div>
+            <div class="l">本月已上</div>
+          </div>
+          <div class="mc-stat">
+            <div class="v">28</div>
+            <div class="l">累積堂數</div>
+          </div>
+          <div class="mc-stat">
+            <div class="v">05/31</div>
+            <div class="l">到期日</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <div class="qa-item" onclick="navigateTo('schedule')">
+          <div class="qa-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div class="qa-label">課表預約</div>
+        </div>
+        <div class="qa-item" onclick="navigateTo('online')">
+          <div class="qa-icon">
+            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <div class="qa-label">線上課程</div>
+        </div>
+        <div class="qa-item" onclick="navigateTo('shop')">
+          <div class="qa-icon">
+            <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          </div>
+          <div class="qa-label">商城</div>
+        </div>
+        <div class="qa-item">
+          <div class="qa-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </div>
+          <div class="qa-label">運動按摩</div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <div class="section-title">今日課程</div>
+        <div class="see-all" onclick="navigateTo('schedule')">VIEW ALL ›</div>
+      </div>
+
+      <div class="today-list">
+        <div class="class-card booked">
+          <div class="ct-time">
+            <div class="h">10:00</div>
+            <div class="a">AM</div>
+          </div>
+          <div class="ct-bar"></div>
+          <div class="ct-info">
+            <div class="ct-name">核心控制 Reformer</div>
+            <div class="ct-meta">教練 Chloe · 床位 B3</div>
+          </div>
+          <div class="ct-badge">已預約</div>
+        </div>
+        <div class="class-card">
+          <div class="ct-time">
+            <div class="h">14:00</div>
+            <div class="a">PM</div>
+          </div>
+          <div class="ct-bar"></div>
+          <div class="ct-info">
+            <div class="ct-name">體態雕塑進階</div>
+            <div class="ct-meta">教練 Mei · 剩 3 位</div>
+          </div>
+          <div class="ct-badge available">可預約</div>
+        </div>
+        <div class="class-card">
+          <div class="ct-time">
+            <div class="h">19:00</div>
+            <div class="a">PM</div>
+          </div>
+          <div class="ct-bar"></div>
+          <div class="ct-info">
+            <div class="ct-name">恢復放鬆 Mat</div>
+            <div class="ct-meta">教練 Linda · 剩 5 位</div>
+          </div>
+          <div class="ct-badge available">可預約</div>
+        </div>
+      </div>
+
+      <div class="promo-banner">
+        <div class="promo-tag">LIMITED TIME ✦</div>
+        <div class="promo-title">夏季限定 — 30 天核心啟動計畫</div>
+        <div class="promo-desc">12 堂線上課程，限時 NT$1,580</div>
+      </div>
+
+      <div class="section-head" style="padding-top: 24px;">
+        <div class="section-title">熱門線上課程</div>
+        <div class="see-all" onclick="navigateTo('online')">VIEW ALL ›</div>
+      </div>
+
+      <div class="course-grid">
+        <div class="course-card" onclick="navigateTo('online')">
+          <div class="course-thumb">
+            <div class="course-play">▶</div>
+            <div class="badge-corner">NEW</div>
+          </div>
+          <div class="course-info">
+            <div class="course-title">居家伸展放鬆</div>
+            <div class="course-meta">8 堂 · 60 min</div>
+            <div class="course-price">NT$980</div>
+          </div>
+        </div>
+        <div class="course-card" onclick="navigateTo('online')">
+          <div class="course-thumb t3">
+            <div class="course-play">▶</div>
+            <div class="badge-corner gold">熱門</div>
+          </div>
+          <div class="course-info">
+            <div class="course-title">孕婦呼吸體態</div>
+            <div class="course-meta">6 堂 · 45 min</div>
+            <div class="course-price">NT$780</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────────── SCHEDULE SCREEN ───────────── -->
+    <div class="screen" id="screen-schedule">
+      <div class="sch-header">
+        <div class="sch-title-row">
+          <div class="sch-page-title">課表預約</div>
+          <div class="sch-filter-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
+          </div>
+        </div>
+        <div class="week-strip">
+          <div class="week-day"><div class="wd">MON</div><div class="dd">21</div></div>
+          <div class="week-day"><div class="wd">TUE</div><div class="dd">22</div></div>
+          <div class="week-day"><div class="wd">WED</div><div class="dd">23</div></div>
+          <div class="week-day active"><div class="wd">THU</div><div class="dd">24</div></div>
+          <div class="week-day"><div class="wd">FRI</div><div class="dd">25</div><div class="dot"></div></div>
+          <div class="week-day"><div class="wd">SAT</div><div class="dd">26</div></div>
+          <div class="week-day"><div class="wd">SUN</div><div class="dd">27</div></div>
+        </div>
+      </div>
+
+      <div class="sch-list">
+        <div class="sch-class">
+          <div class="sch-time-col">
+            <div class="sch-t">09:00</div>
+            <div class="sch-ap">AM</div>
+            <div class="sch-dur">55 min</div>
+          </div>
+          <div>
+            <div class="sch-name">新手入門 Reformer</div>
+            <div class="sch-coach-row">教練 Amy · Studio A</div>
+            <div class="sch-spots">剩 6 位</div>
+          </div>
+          <button class="sch-btn">預約</button>
+        </div>
+        <div class="sch-class">
+          <div class="sch-time-col">
+            <div class="sch-t">10:00</div>
+            <div class="sch-ap">AM</div>
+            <div class="sch-dur">55 min</div>
+          </div>
+          <div>
+            <div class="sch-name">核心控制 Reformer</div>
+            <div class="sch-coach-row">教練 Chloe · Studio A</div>
+            <div class="sch-spots">剩 3 位</div>
+          </div>
+          <button class="sch-btn booked">已預約</button>
+        </div>
+        <div class="sch-class">
+          <div class="sch-time-col">
+            <div class="sch-t">11:00</div>
+            <div class="sch-ap">AM</div>
+            <div class="sch-dur">55 min</div>
+          </div>
+          <div>
+            <div class="sch-name">器械塑身 Reformer</div>
+            <div class="sch-coach-row">教練 Vivian · Studio B</div>
+            <div class="sch-spots">剩 4 位</div>
+          </div>
+          <button class="sch-btn">預約</button>
+        </div>
+        <div class="sch-class">
+          <div class="sch-time-col">
+            <div class="sch-t">14:00</div>
+            <div class="sch-ap">PM</div>
+            <div class="sch-dur">55 min</div>
+          </div>
+          <div>
+            <div class="sch-name">體態雕塑進階</div>
+            <div class="sch-coach-row">教練 Mei · Studio A</div>
+            <div class="sch-spots low">剩 1 位</div>
+          </div>
+          <button class="sch-btn">預約</button>
+        </div>
+        <div class="sch-class full">
+          <div class="sch-time-col">
+            <div class="sch-t">16:00</div>
+            <div class="sch-ap">PM</div>
+            <div class="sch-dur">55 min</div>
+          </div>
+          <div>
+            <div class="sch-name">孕婦專屬課程</div>
+            <div class="sch-coach-row">教練 Linda · Studio C</div>
+            <div class="sch-spots low">已額滿</div>
+          </div>
+          <button class="sch-btn waitlist">候補</button>
+        </div>
+        <div class="sch-class">
+          <div class="sch-time-col">
+            <div class="sch-t">19:00</div>
+            <div class="sch-ap">PM</div>
+            <div class="sch-dur">55 min</div>
+          </div>
+          <div>
+            <div class="sch-name">恢復放鬆 Mat</div>
+            <div class="sch-coach-row">教練 Linda · Studio B</div>
+            <div class="sch-spots">剩 5 位</div>
+          </div>
+          <button class="sch-btn">預約</button>
+        </div>
+        <div class="sch-class">
+          <div class="sch-time-col">
+            <div class="sch-t">20:00</div>
+            <div class="sch-ap">PM</div>
+            <div class="sch-dur">55 min</div>
+          </div>
+          <div>
+            <div class="sch-name">核心訓練 Reformer</div>
+            <div class="sch-coach-row">教練 Sara · Studio A</div>
+            <div class="sch-spots">剩 2 位</div>
+          </div>
+          <button class="sch-btn">預約</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────────── ONLINE COURSES SCREEN ───────────── -->
+    <div class="screen" id="screen-online">
+      <div class="online-header">
+        <div class="online-title-row">
+          <div class="online-page-title">線上課程</div>
+          <div class="online-search">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+        </div>
+        <div class="online-subtitle">隨時隨地，與你同行</div>
+      </div>
+
+      <div class="cat-scroll">
+        <div class="cat-pill active">全部</div>
+        <div class="cat-pill">新手入門</div>
+        <div class="cat-pill">核心訓練</div>
+        <div class="cat-pill">體態雕塑</div>
+        <div class="cat-pill">居家伸展</div>
+        <div class="cat-pill">孕婦專區</div>
+        <div class="cat-pill">恢復放鬆</div>
+      </div>
+
+      <div class="featured-course">
+        <div class="ft-tag">FEATURED ✦</div>
+        <div class="ft-content">
+          <div class="ft-title">30 天核心啟動計畫</div>
+          <div class="ft-meta">12 堂進階課程 · 教練 Chloe</div>
+          <div class="ft-play">
+            <div class="ft-play-icon">▶</div>
+            繼續觀看 — 第 4 堂
+          </div>
+        </div>
+      </div>
+
+      <div class="course-grid">
+        <div class="course-card">
+          <div class="course-thumb">
+            <div class="course-play">▶</div>
+            <div class="badge-corner">NEW</div>
+          </div>
+          <div class="course-info">
+            <div class="course-title">居家伸展放鬆系列</div>
+            <div class="course-meta">8 堂 · 60 min</div>
+            <div class="course-price">NT$980</div>
+          </div>
+        </div>
+        <div class="course-card">
+          <div class="course-thumb t2">
+            <div class="course-play">▶</div>
+          </div>
+          <div class="course-info">
+            <div class="course-title">基礎核心啟動</div>
+            <div class="course-meta">10 堂 · 已購買</div>
+            <div class="course-price unlocked">✓ 已解鎖</div>
+          </div>
+        </div>
+        <div class="course-card">
+          <div class="course-thumb t3">
+            <div class="course-play">▶</div>
+            <div class="badge-corner gold">限時</div>
+          </div>
+          <div class="course-info">
+            <div class="course-title">孕婦呼吸與體態</div>
+            <div class="course-meta">6 堂 · 45 min</div>
+            <div class="course-price">NT$780</div>
+          </div>
+        </div>
+        <div class="course-card">
+          <div class="course-thumb t4">
+            <div class="course-play">▶</div>
+          </div>
+          <div class="course-info">
+            <div class="course-title">體態雕塑進階班</div>
+            <div class="course-meta">15 堂 · 75 min</div>
+            <div class="course-price">NT$1,580</div>
+          </div>
+        </div>
+        <div class="course-card">
+          <div class="course-thumb">
+            <div class="course-play">▶</div>
+          </div>
+          <div class="course-info">
+            <div class="course-title">女性專區 — 骨盆養護</div>
+            <div class="course-meta">7 堂 · 50 min</div>
+            <div class="course-price">NT$880</div>
+          </div>
+        </div>
+        <div class="course-card">
+          <div class="course-thumb t2">
+            <div class="course-play">▶</div>
+          </div>
+          <div class="course-info">
+            <div class="course-title">恢復放鬆 — 失眠舒緩</div>
+            <div class="course-meta">5 堂 · 30 min</div>
+            <div class="course-price">NT$580</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────────── SHOP SCREEN ───────────── -->
+    <div class="screen" id="screen-shop">
+      <div class="shop-header">
+        <div class="online-title-row">
+          <div class="online-page-title">商城</div>
+          <div class="online-search">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          </div>
+        </div>
+        <div class="online-subtitle" style="margin-bottom: 16px;">會員專屬優惠價</div>
+      </div>
+
+      <div class="shop-banner">
+        <div class="shop-banner-text">
+          <div class="shop-banner-tag">MEMBER EXCLUSIVE</div>
+          <div class="shop-banner-title">會員 9 折優惠</div>
+          <div class="shop-banner-sub">全館商品免運</div>
+        </div>
+      </div>
+
+      <div class="shop-categories">
+        <div class="sc-item"><div class="sc-icon">🥤</div><div class="sc-label">蛋白飲</div></div>
+        <div class="sc-item"><div class="sc-icon">🧦</div><div class="sc-label">止滑襪</div></div>
+        <div class="sc-item"><div class="sc-icon">🧖</div><div class="sc-label">毛巾</div></div>
+        <div class="sc-item"><div class="sc-icon">💧</div><div class="sc-label">水壺</div></div>
+      </div>
+
+      <div class="product-grid">
+        <div class="product-card">
+          <div class="product-img">🥤</div>
+          <div class="product-info">
+            <div class="product-name">乳清蛋白飲 — 玫瑰口味</div>
+            <div class="product-bottom">
+              <div class="product-price">$1,280</div>
+              <div class="product-add">+</div>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img p2">🧦</div>
+          <div class="product-info">
+            <div class="product-name">CORE+ 專業止滑襪</div>
+            <div class="product-bottom">
+              <div class="product-price">$380</div>
+              <div class="product-add">+</div>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img p3">💧</div>
+          <div class="product-info">
+            <div class="product-name">不鏽鋼運動水壺 750ml</div>
+            <div class="product-bottom">
+              <div class="product-price">$680</div>
+              <div class="product-add">+</div>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img p4">🧖</div>
+          <div class="product-info">
+            <div class="product-name">純棉運動毛巾</div>
+            <div class="product-bottom">
+              <div class="product-price">$280</div>
+              <div class="product-add">+</div>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img">🎀</div>
+          <div class="product-info">
+            <div class="product-name">瑜珈髮帶套組</div>
+            <div class="product-bottom">
+              <div class="product-price">$220</div>
+              <div class="product-add">+</div>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img p3">🪄</div>
+          <div class="product-info">
+            <div class="product-name">筋膜放鬆球</div>
+            <div class="product-bottom">
+              <div class="product-price">$480</div>
+              <div class="product-add">+</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────────── PROFILE SCREEN ───────────── -->
+    <div class="screen" id="screen-profile">
+      <div class="profile-header">
+        <div class="profile-avatar">A</div>
+        <div class="profile-name">Annie Chen</div>
+        <div class="profile-id">MEMBER ID · CP202401</div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-v">28</div>
+          <div class="stat-l">累積堂數</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-v">12</div>
+          <div class="stat-l">已收藏</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-v">680</div>
+          <div class="stat-l">獎勵點數</div>
+        </div>
+      </div>
+
+      <div class="level-card">
+        <div class="level-top">
+          <div class="level-title">
+            <span class="level-icon">✦</span>
+            <span>Lv. 4 — 進階學員</span>
+          </div>
+          <div class="level-points">680 / 1000</div>
+        </div>
+        <div class="level-bar">
+          <div class="level-fill"></div>
+        </div>
+        <div class="level-meta">距離下一階 320 點 · 解鎖專屬寶箱</div>
+      </div>
+
+      <div class="menu-section">
+        <div class="menu-section-title">會員管理</div>
+        <div class="menu-list">
+          <div class="menu-item">
+            <div class="menu-icon">📝</div>
+            <div class="menu-text">
+              <div class="menu-label">會員資料</div>
+              <div class="menu-sub">個人資訊、聯絡方式</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </div>
+          <div class="menu-item">
+            <div class="menu-icon">📜</div>
+            <div class="menu-text">
+              <div class="menu-label">電子合約</div>
+              <div class="menu-sub">已簽署 1 份合約</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </div>
+          <div class="menu-item">
+            <div class="menu-icon">🎫</div>
+            <div class="menu-text">
+              <div class="menu-label">會員方案</div>
+              <div class="menu-sub">無限月費 · 05/31 到期</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </div>
+          <div class="menu-item">
+            <div class="menu-icon">📊</div>
+            <div class="menu-text">
+              <div class="menu-label">上課紀錄</div>
+              <div class="menu-sub">查詢歷史出席</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-section">
+        <div class="menu-section-title">訂單與消費</div>
+        <div class="menu-list">
+          <div class="menu-item">
+            <div class="menu-icon">💳</div>
+            <div class="menu-text">
+              <div class="menu-label">購課紀錄</div>
+              <div class="menu-sub">查詢課程購買</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </div>
+          <div class="menu-item">
+            <div class="menu-icon">📦</div>
+            <div class="menu-text">
+              <div class="menu-label">商城訂單</div>
+              <div class="menu-sub">2 筆訂單處理中</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </div>
+          <div class="menu-item">
+            <div class="menu-icon">🧾</div>
+            <div class="menu-text">
+              <div class="menu-label">發票收據</div>
+              <div class="menu-sub">電子發票管理</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-section">
+        <div class="menu-section-title">互動與設定</div>
+        <div class="menu-list">
+          <div class="menu-item">
+            <div class="menu-icon">🏆</div>
+            <div class="menu-text">
+              <div class="menu-label">排行榜</div>
+              <div class="menu-sub">本月你排第 12 名</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </div>
+          <div class="menu-item">
+            <div class="menu-icon">🎁</div>
+            <div class="menu-text">
+              <div class="menu-label">每日任務</div>
+              <div class="menu-sub">3 / 5 已完成</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </div>
+          <div class="menu-item">
+            <div class="menu-icon">💬</div>
+            <div class="menu-text">
+              <div class="menu-label">匿名意見回饋</div>
+              <div class="menu-sub">場館 · 教練 · 其他建議</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </div>
+          <div class="menu-item">
+            <div class="menu-icon">⚙</div>
+            <div class="menu-text">
+              <div class="menu-label">設定</div>
+              <div class="menu-sub">通知、隱私、語言</div>
+            </div>
+            <div class="menu-arrow">›</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────────── AI CHAT SCREEN (separate, fills phone) ───────────── -->
+    <div class="ai-chat-screen" id="screen-ai">
+      <div class="ai-header">
+        <div class="ai-back" onclick="closeAi()">‹</div>
+        <div class="ai-avatar">✦</div>
+        <div class="ai-info">
+          <div class="ai-name">Core+ AI 助手</div>
+          <div class="ai-status">線上服務中</div>
+        </div>
+      </div>
+
+      <div class="chat-body" id="chatBody">
+        <div class="msg ai">
+          <div class="msg-bubble">嗨 Annie ✨ 我是 Core+ AI 助手，有任何關於課程、會員、預約、商品的問題都可以問我！</div>
+          <div class="msg-time">10:02</div>
+        </div>
+        <div class="msg user">
+          <div class="msg-bubble">我想了解月費方案有哪些？</div>
+          <div class="msg-time">10:03</div>
+        </div>
+        <div class="msg ai">
+          <div class="msg-bubble">我們目前有三種主要方案：<br><br>🌸 <strong>基礎月費</strong><br>NT$2,800／月 · 每月 8 堂<br><br>🌸 <strong>無限月費</strong><br>NT$4,500／月 · 無堂數限制<br><br>🌸 <strong>堂數套票</strong><br>10 堂 NT$3,200 起<br><br>需要我幫你推薦最適合的方案嗎？</div>
+          <div class="msg-time">10:03</div>
+        </div>
+      </div>
+
+      <div class="suggest-chips">
+        <div class="chip" onclick="sendQuick('推薦適合我的課程')">推薦適合我的課程</div>
+        <div class="chip" onclick="sendQuick('如何預約體驗課')">如何預約體驗課</div>
+        <div class="chip" onclick="sendQuick('場館位置交通')">場館位置交通</div>
+      </div>
+
+      <div class="chat-input-row">
+        <input type="text" class="chat-input" id="chatInput" placeholder="輸入您的問題⋯">
+        <button class="send-btn" onclick="sendMsg()">➤</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- AI Floating Button -->
+  <div class="ai-fab" id="aiFab" onclick="openAi()">✦</div>
+
+  <!-- Bottom Navigation -->
+  <div class="nav-bar" id="navBar">
+    <div class="nav-item active" data-screen="home" onclick="navigateTo('home')">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <div class="nav-label">首頁</div>
+    </div>
+    <div class="nav-item" data-screen="schedule" onclick="navigateTo('schedule')">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+      <div class="nav-label">課表</div>
+    </div>
+    <div class="nav-item" data-screen="online" onclick="navigateTo('online')">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+      <div class="nav-label">課程</div>
+    </div>
+    <div class="nav-item" data-screen="shop" onclick="navigateTo('shop')">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div>
+      <div class="nav-label">商城</div>
+    </div>
+    <div class="nav-item" data-screen="profile" onclick="navigateTo('profile')">
+      <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <div class="nav-label">我的</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-info">
+  <div>CORE + PILATES — APP PROTOTYPE</div>
+  <div class="divider"></div>
+  <div style="font-size:9px; letter-spacing:3px;">點擊底部導覽或快捷功能切換頁面</div>
+</div>
+
+<script>
+  function navigateTo(screenId) {
+    // Hide AI chat
+    document.getElementById('screen-ai').classList.remove('active');
+    document.getElementById('navBar').classList.remove('hidden');
+    document.getElementById('aiFab').classList.remove('hidden');
+
+    // Hide all main screens
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    // Show target
+    document.getElementById('screen-' + screenId).classList.add('active');
+
+    // Update nav active state
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.classList.toggle('active', item.dataset.screen === screenId);
+    });
+
+    // Scroll to top of screen
+    document.querySelector('.screen-container').scrollTop = 0;
+  }
+
+  function openAi() {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-ai').classList.add('active');
+    document.getElementById('navBar').classList.add('hidden');
+    document.getElementById('aiFab').classList.add('hidden');
+    setTimeout(() => {
+      const body = document.getElementById('chatBody');
+      body.scrollTop = body.scrollHeight;
+    }, 100);
+  }
+
+  function closeAi() {
+    navigateTo('home');
+  }
+
+  function sendQuick(text) {
+    document.getElementById('chatInput').value = text;
+    sendMsg();
+  }
+
+  function sendMsg() {
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    const body = document.getElementById('chatBody');
+    const time = new Date().toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', hour12: false });
+
+    // User message
+    const userMsg = document.createElement('div');
+    userMsg.className = 'msg user';
+    userMsg.innerHTML = `<div class="msg-bubble">${escapeHtml(text)}</div><div class="msg-time">${time}</div>`;
+    body.appendChild(userMsg);
+    input.value = '';
+    body.scrollTop = body.scrollHeight;
+
+    // Typing indicator
+    const typing = document.createElement('div');
+    typing.className = 'msg ai';
+    typing.innerHTML = `<div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+    body.appendChild(typing);
+    body.scrollTop = body.scrollHeight;
+
+    // AI reply
+    setTimeout(() => {
+      typing.remove();
+      const replies = {
+        '推薦適合我的課程': '根據你目前的程度（28 堂累積經驗），我推薦你嘗試 <strong>核心控制 Reformer</strong>（教練 Chloe）和 <strong>體態雕塑進階</strong>（教練 Mei）。要幫你直接預約嗎？✨',
+        '如何預約體驗課': '新會員體驗課 NT$680／堂！只要點選下方「課表預約」→ 選擇日期 → 選擇課程即可。第一次體驗會由教練帶你了解器械操作 🌸',
+        '場館位置交通': '我們位於 📍 台北市信義區某某路 100 號 5F<br>🚇 捷運市政府站 3 號出口步行 5 分鐘<br>🅿 提供 90 分鐘特約停車'
+      };
+      const reply = replies[text] || '我幫你查詢中⋯ 你也可以前往「課表」直接預約，或前往「我的」查看會員方案 🌸';
+      const aiMsg = document.createElement('div');
+      aiMsg.className = 'msg ai';
+      aiMsg.innerHTML = `<div class="msg-bubble">${reply}</div><div class="msg-time">${time}</div>`;
+      body.appendChild(aiMsg);
+      body.scrollTop = body.scrollHeight;
+    }, 900);
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  // Enter key support for chat
+  document.getElementById('chatInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendMsg();
+  });
+
+  // Category pill toggle on online courses
+  document.querySelectorAll('.cat-pill').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('.cat-pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+    });
+  });
+
+  // Week day toggle
+  document.querySelectorAll('.week-day').forEach(d => {
+    d.addEventListener('click', () => {
+      document.querySelectorAll('.week-day').forEach(x => x.classList.remove('active'));
+      d.classList.add('active');
+    });
+  });
+
+  // Class card book toggle
+  document.querySelectorAll('.sch-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      if (btn.classList.contains('booked')) {
+        btn.classList.remove('booked');
+        btn.textContent = '預約';
+      } else if (!btn.classList.contains('waitlist')) {
+        btn.classList.add('booked');
+        btn.textContent = '已預約';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
